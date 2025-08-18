@@ -21,6 +21,8 @@ userRouter.post('/signup', async (req, res) => {
         password: z.string().min(8).max(100)
     })
 
+    console.log(req.body)
+
     const parsedSuccess = inputSchema.safeParse(req.body)
 
     if (!parsedSuccess.success) {

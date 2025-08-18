@@ -138,7 +138,10 @@
             const response = await fetch('/api/v1/user/signin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    email : data.email,
+                    password : data.password
+                })
             });
 
             const result = await response.json();
@@ -165,7 +168,11 @@
             const response = await fetch('/api/v1/user/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    username : data.name,
+                    email : data.email,
+                    password : data.password
+                })
             });
             const result = await response.json();
 
