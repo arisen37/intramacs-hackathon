@@ -13,7 +13,7 @@ function authentication(){
     }
     else{
 
-        req.headers.username = decodedInfo;
+        req.headers.email = decodedInfo;
         res.status(200).json({
             message : "Successfully authenticated"
         })

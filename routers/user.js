@@ -79,10 +79,12 @@ userRouter.post('/signin', async (req, res) => {
                     msg: "invalid credentials"
                 })
             } else {
-                res.status(200).json({
-                    ok: true,
-                    token
-                })
+                 return res.cookie('token', token, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production'
+                    }).status(200).json({
+                        message: "Sign in successful."
+                    });                                   
             }
         })
     }
