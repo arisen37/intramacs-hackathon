@@ -11,7 +11,7 @@ app.use(express.json())
 app.use('/api/v1/user', userRouter)
 app.use(cors())
 
-app.listen(443)
+app.listen(3000)
 
 
 
