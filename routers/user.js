@@ -3,6 +3,7 @@ const { auth } = require('./routers/auth')
 const {UserModel} = require('./db.js')
 const userRouter = Router();
 
+
 JWT_SECRET = process.env.JWT_SECRET
 
 userRouter.post('/signup' , (req , res)=>{
@@ -19,7 +20,9 @@ userRouter.post('/signup' , (req , res)=>{
 
         try{
             await Newuser.save()
-            res.status(200)
+            res.status(200).json({
+                ok : true
+            })
         }catch{
             res.status(400).json({
                 message : 'error'
@@ -33,8 +36,8 @@ userRouter.post('/signin'  , (req , res)=>{
     const password = req.body.password
 
     if(!username){
-        res.status(401).json({
-            msg : "error"
+        res.status(200).json({
+                ok : true
         })
     }else{
         const token = jwt.sign(username , JWT_SECRET)
