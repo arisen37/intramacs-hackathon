@@ -79,16 +79,17 @@ userRouter.post('/signin', async (req, res) => {
                     msg: "invalid credentials"
                 })
             } else {
-                 // In routers/user.js inside the signin success block
+                const payload = { userId: user._id, username: user.username };
+                const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 
-                // Send the token as a secure, httpOnly cookie
+                // This sends a secure cookie to the browser
                 return res.cookie('token', token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-                    sameSite: 'strict'
+                    httpOnly: true, // The cookie cannot be accessed by client-side JavaScript
+                    secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+                    sameSite: 'strict' // Helps prevent CSRF attacks
                 }).status(200).json({
                     message: "Sign in successful."
-                });                                  
+});                            
             }
         })
     }

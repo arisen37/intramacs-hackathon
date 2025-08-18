@@ -101,6 +101,13 @@
     </div>
 
     <script>
+    // This function runs immediately to check if the user is already logged in
+    // by simply trying to fetch the chat page. The server will handle the redirect.
+    (function() {
+        // If this page loads, it means the user is not logged in.
+        // No need for a redirect check here anymore, the server does it.
+    })();
+
     const signinContainer = document.getElementById('signin-container');
     const signupContainer = document.getElementById('signup-container');
     const showSignupBtn = document.getElementById('show-signup');
@@ -120,6 +127,7 @@
         signinContainer.classList.remove('hidden');
     });
 
+    // Handle Sign In Form Submission
     signinForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         signinMessage.textContent = '';
@@ -136,15 +144,8 @@
             const result = await response.json();
 
             if (response.ok) {
-                signinMessage.textContent = 'Sign in successful! Redirecting...';
-                signinMessage.classList.replace('text-red-400', 'text-green-400');
-                
-                // FIXED: The server now sets a cookie, so we just need to redirect.
-                // localStorage.setItem("token", result.token) <--- REMOVED
-                
-                // FIXED: Added the redirect to the chat page!
+                // The server set the cookie, so we just need to redirect.
                 window.location.href = "/chatpage.html";
-
             } else {
                 signinMessage.textContent = result.message || 'An error occurred.';
             }
@@ -153,25 +154,19 @@
         }
     });
 
+    // Handle Sign Up Form Submission
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         signupMessage.textContent = '';
         const formData = new FormData(signupForm);
         const data = Object.fromEntries(formData.entries());
-        // Use username for consistency
-        const payload = {
-            username: data.name,
-            email: data.email,
-            password: data.password
-        };
 
         try {
             const response = await fetch('/api/v1/user/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(data)
             });
-
             const result = await response.json();
 
             if (response.ok) {
@@ -182,14 +177,14 @@
                     signinContainer.classList.remove('hidden');
                 }, 2000);
             } else {
-                signupMessage.textContent = result.message || 'An error occurred.';
+                const errorMessages = result.errors ? Object.values(result.errors).flat().join(' ') : (result.message || 'An error occurred.');
+                signupMessage.textContent = errorMessages;
             }
         } catch (error) {
             signupMessage.textContent = 'Could not connect to the server.';
         }
     });
 </script>
-
 </body>
 
 </html>
