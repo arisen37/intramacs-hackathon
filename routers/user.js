@@ -79,12 +79,16 @@ userRouter.post('/signin', async (req, res) => {
                     msg: "invalid credentials"
                 })
             } else {
-                 return res.cookie('token', token, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === 'production'
-                    }).status(200).json({
-                        message: "Sign in successful."
-                    });                                   
+                 // In routers/user.js inside the signin success block
+
+                // Send the token as a secure, httpOnly cookie
+                return res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+                    sameSite: 'strict'
+                }).status(200).json({
+                    message: "Sign in successful."
+                });                                  
             }
         })
     }
