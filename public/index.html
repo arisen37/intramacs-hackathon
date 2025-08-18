@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,34 +11,42 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+
         .form-container.hidden {
             display: none;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
+
+<body
+    class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
 
     <div class="w-full max-w-md">
         <!-- Main Container -->
-        <div class="bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
-        
+        <div
+            class="bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
+
             <!-- Sign In Form -->
             <div id="signin-container" class="form-container p-8 md:p-12">
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-bold text-white">Welcome Back</h1>
                     <p class="text-gray-400 mt-2">Sign in to continue your journey.</p>
                 </div>
-                
+
                 <form id="signin-form" class="space-y-6">
                     <div>
                         <label for="signin-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <input type="email" id="signin-email" name="email" placeholder="you@example.com" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <input type="email" id="signin-email" name="email" placeholder="you@example.com" required
+                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
                     <div>
-                        <label for="signin-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                        <input type="password" id="signin-password" name="password" placeholder="••••••••" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <label for="signin-password"
+                            class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <input type="password" id="signin-password" name="password" placeholder="••••••••" required
+                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
-                    <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
+                    <button type="submit"
+                        class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
                         Sign In
                     </button>
                 </form>
@@ -45,7 +54,8 @@
                 <div id="signin-message" class="text-center text-red-400 mt-4 text-sm"></div>
 
                 <div class="text-center text-gray-400 mt-8">
-                    <p>Not registered yet? <button id="show-signup" class="font-semibold text-purple-400 hover:text-purple-300">Sign Up</button></p>
+                    <p>Not registered yet? <button id="show-signup"
+                            class="font-semibold text-purple-400 hover:text-purple-300">Sign Up</button></p>
                 </div>
             </div>
 
@@ -55,21 +65,26 @@
                     <h1 class="text-3xl font-bold text-white">Create Account</h1>
                     <p class="text-gray-400 mt-2">Start your sentiment tracking journey.</p>
                 </div>
-                
+
                 <form id="signup-form" class="space-y-6">
                     <div>
                         <label for="signup-name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                        <input type="text" id="signup-name" name="name" placeholder="Alex Doe" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <input type="text" id="signup-name" name="name" placeholder="Alex Doe" required
+                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
                     <div>
                         <label for="signup-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <input type="email" id="signup-email" name="email" placeholder="you@example.com" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <input type="email" id="signup-email" name="email" placeholder="you@example.com" required
+                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
                     <div>
-                        <label for="signup-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                        <input type="password" id="signup-password" name="password" placeholder="••••••••" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <label for="signup-password"
+                            class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <input type="password" id="signup-password" name="password" placeholder="••••••••" required
+                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
-                    <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
+                    <button type="submit"
+                        class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
                         Create Account
                     </button>
                 </form>
@@ -77,7 +92,8 @@
                 <div id="signup-message" class="text-center text-red-400 mt-4 text-sm"></div>
 
                 <div class="text-center text-gray-400 mt-8">
-                    <p>Already have an account? <button id="show-signin" class="font-semibold text-purple-400 hover:text-purple-300">Sign In</button></p>
+                    <p>Already have an account? <button id="show-signin"
+                            class="font-semibold text-purple-400 hover:text-purple-300">Sign In</button></p>
                 </div>
             </div>
 
@@ -104,11 +120,11 @@
         // --- Handle Sign In Form Submission ---
         const signinForm = document.getElementById('signin-form');
         const signinMessage = document.getElementById('signin-message');
-        
         signinForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+        
             signinMessage.textContent = ''; // Clear previous messages
-            
+
             const formData = new FormData(signinForm);
             const data = Object.fromEntries(formData.entries());
 
@@ -119,7 +135,10 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(data),
+                    body: JSON.stringify({
+                        email: data.email,
+                        password: data.password
+                    })
                 });
 
                 const result = await response.json();
@@ -128,8 +147,10 @@
                     signinMessage.textContent = 'Sign in successful! Redirecting...';
                     signinMessage.classList.remove('text-red-400');
                     signinMessage.classList.add('text-green-400');
-                    // Redirect to the chat page on success
-                    // window.location.href = '/chat.html'; 
+
+                    localStorage.setItem("token" , result.token)
+
+                    window.location.href = "./chatpage.html"
                 } else {
                     signinMessage.textContent = result.message || 'An error occurred.';
                 }
@@ -157,7 +178,11 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(data),
+                    body: JSON.stringify({
+                        username: data.name,
+                        email: data.email,
+                        password: data.password
+                    })
                 });
 
                 const result = await response.json();
@@ -179,7 +204,9 @@
                 signupMessage.textContent = 'Could not connect to the server.';
             }
         });
+        
     </script>
 
 </body>
+
 </html>

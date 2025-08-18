@@ -1,63 +1,93 @@
 const { Router } = require('express')
-const { auth } = require('./routers/auth')
-const {UserModel} = require('./db.js')
+const { auth } = require('../auth')
+require('dotenv').config();
+const jwt = require('jsonwebtoken')
+const JWT_SECRET = process.env.JWT_SECRET
+const { UserModel } = require('../db')
 const userRouter = Router();
+const cors = require('cors');
+const { default: z, ZodAny } = require('zod');
+const bcrypt = require('bcrypt')
+const path = require('path');
+
+userRouter.use(cors())
 
 
-JWT_SECRET = process.env.JWT_SECRET
+userRouter.post('/signup', async (req, res) => {
 
-userRouter.post('/signup' , (req , res)=>{
-    const username = req.body.username
-    const email = req.body.email
-    const password = req.boy.password
+    const inputSchema = z.object({
+        email: z.email(),
+        username: z.string().min(3).max(100),
+        password: z.string().min(8).max(100)
+    })
 
-    bcrypt.hash(password , 10 , async function(err , data){
-        const Newuser = new UserModel({
-            email : email,
-            username : username,
-            password : data
+    const parsedSuccess = inputSchema.safeParse(req.body)
+
+    if (!parsedSuccess.success) {
+        res.status(409).json({
+            error: parsedSuccess.error
         })
+    }
 
-        try{
+    else {
+
+        const username = req.body.username
+        const email = req.body.email
+        const password = req.body.password
+
+
+        try {
+            hashedPass = await bcrypt.hash(password, 10)
+            const Newuser = new UserModel({
+                email: email,
+                username: username,
+                password: hashedPass
+            })
+
             await Newuser.save()
             res.status(200).json({
-                ok : true
+                ok: true
             })
-        }catch{
-            res.status(400).json({
-                message : 'error'
-            })
-        }     
-    })
+
+        }
+        catch {
+            if (error.code === 11000) {
+                return res.status(409).json({ message: "Username or email already exists." });
+            }
+            return res.status(500).json({ message: "Internal server error." });
+        }
+
+    }
 })
 
-userRouter.post('/signin'  , (req , res)=>{
-    const username = req.body.username 
+userRouter.post('/signin', async (req, res) => {
+    const email = req.body.email
     const password = req.body.password
 
-    if(!username){
+    if (!email) {
         res.status(200).json({
-                ok : true
+            error: "username not found"
         })
-    }else{
-        const token = jwt.sign(username , JWT_SECRET)
-        
-        const user = UserModel.find({username : username})
+    } else {
+        const token = jwt.sign(email, JWT_SECRET)
 
-        bcrypt.compare(password , user.password , function(err , data){
-            if(result){
-                res.status(200).json({
-                    token
-                })
-            }else{
+        const user = await UserModel.findOne({ email: email })
+
+        bcrypt.compare(password, user.password, function (err, data) {
+            if (err) {
                 res.status(401).json({
-                    msg : "invalid credentials"
+                    msg: "invalid credentials"
+                })
+            } else {
+                res.status(200).json({
+                    ok: true,
+                    token
                 })
             }
         })
-    }    
+    }
 })
 
-module.exports({
+module.exports = {
     userRouter
-})
+}
