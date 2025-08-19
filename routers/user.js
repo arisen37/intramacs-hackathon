@@ -73,8 +73,15 @@ userRouter.post('/signin', async (req, res) => {
     } else {
         const token = jwt.sign(email, JWT_SECRET)
 
-        const user = await UserModel.findOne({ email: email })
+        // You look for a user in the database
+        const user = await UserModel.findOne({ email: req.body.email });
 
+        // ADD THIS CHECK!
+        if (!user) {
+            // If no user was found, send back an error and stop execution.
+            return res.status(400).json({ error: "Invalid login credentials" });
+        }
+        
         bcrypt.compare(password, user.password, function (err, data) {
             if (err) {
                 res.status(401).json({
