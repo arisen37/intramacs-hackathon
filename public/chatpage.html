@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Chatbot</title>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/';
+        }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -27,6 +35,11 @@
                         </p>
                     </div>
                 </div>
+                <button id="logout-button" class="p-2 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                </button>
             </header>
             <main id="chat-window" class="flex-1 p-6 overflow-y-auto space-y-6">
                 <div class="p-4 bg-indigo-500 bg-opacity-20 text-indigo-200 rounded-lg text-center text-sm border border-indigo-500/50">
@@ -48,6 +61,7 @@
         const form = document.getElementById('message-form');
         const input = document.getElementById('message-input');
         const chatWindow = document.getElementById('chat-window');
+        const logoutButton = document.getElementById('logout-button'); // Get the logout button
 
         const API_URL = "https://arisen37-sentiment-model-api.hf.space/predict"; 
 
@@ -90,6 +104,11 @@
                 "activities": ["When surprised, notice how your mind immediately tries to label the event. Try to just stay with the raw feeling of not-knowing.", "Do something completely unplanned today. Break a routine intentionally."]
             }
         };
+
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        });
 
         async function getSentiment(message) {
             try {
