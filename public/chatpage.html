@@ -16,7 +16,6 @@
 <body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
 
     <div class="flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-4xl">
-        <!-- Chatbot Container -->
         <div class="w-full max-w-lg h-[90vh] max-h-[700px] bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-700">
             <header class="relative flex items-center justify-between p-4 border-b border-gray-700">
                 <div class="flex items-center space-x-3">
@@ -50,42 +49,66 @@
         const input = document.getElementById('message-input');
         const chatWindow = document.getElementById('chat-window');
 
-        // --- Configuration ---
-        // This now points to your own backend server route
-        const API_URL = "/ask-gemini"; 
+        const API_URL = "https://arisen37-sentiment-model-api.hf.space/predict"; 
 
         const colorMap = {
             sadness: 'blue-500', joy: 'yellow-400', love: 'pink-500',
             anger: 'red-500', fear: 'purple-500', surprise: 'teal-400',
             default: 'gray-500'
         };
+        const sentimentMap = ["sadness", "joy", "love", "anger", "fear", "surprise"];
 
-        async function getSuggestion(message) {
+        const suggestions = {
+            "sadness": {
+                "quotes": ["Don't just try to feel good, try to understand what is true. The end of suffering is in understanding.", "Your sadness is a message. Instead of running from it, listen to it."],
+                "songs": ["Listen to 'Mann Laago Mero Yaar Fakiri Mein' by Kabir. It speaks of finding solace in truth, beyond worldly sorrows.", "Listen to 'Madho Hum Aise Tu Aisa' by Kabir, a song of surrender and acceptance."],
+                "activities": ["Ask yourself: 'Who is it that is sad?' Inquire into the nature of the 'I' that suffers.", "Read a chapter from the Ashtavakra Gita or the Upanishads."]
+            },
+            "joy": {
+                "quotes": ["Is this happiness dependent on something? If it is, it will soon turn into sorrow. Seek the joy that is unconditional.", "True Joy (Ananda) is not an event; it is the nature of your Self."],
+                "songs": ["Listen to 'Aanandam' (Isha Sanskrit). It is a chant celebrating the blissfulness of one's true nature.", "Listen to a rendition of 'Lali Mere Lal Ki' by Kabir, about seeing the divine light everywhere."],
+                "activities": ["Observe this feeling of joy without getting attached to it. See where it comes from and where it goes.", "Engage in your work with full attention (Karma Yoga), finding joy in the action itself, not its results."]
+            },
+            "anger": {
+                "quotes": ["Anger is a sign that your ego has been hurt. Look at the ego, not at the one who hurt it.", "Anger is a great energy. Use it not to destroy others, but to destroy your own inner bondages."],
+                "songs": ["Listen to 'Nirvana Shatakam' (by Adi Shankaracharya). A powerful chant to detach from the ego which is the root of anger.", "Listen to the calming chant 'Om Shanti Om' to find inner peace."],
+                "activities": ["Instead of reacting, pause and ask: 'What expectation of mine was violated here? Is this expectation true?'.", "Channel the energy of anger into a creative or physically demanding task with full awareness."]
+            },
+            "fear": {
+                "quotes": ["All fear is the fear of death. But you are not that which can die. Know your immortal Self.", "You are afraid because you are identified with the perishable. Inquire 'What am I?' beyond the body and mind."],
+                "songs": ["Listen to 'Bhay Bhanjana' - a chant that invokes the dispeller of fear.", "Listen to 'Aad Guray Nameh' - a mantra for protection and stability against fear."],
+                "activities": ["Sit with the feeling of fear. Don't resist it. Just watch it as a sensation in the body.", "Read about the lives of fearless sages like Nachiketa (from the Upanishads) to draw inspiration."]
+            },
+            "love": {
+                "quotes": ["If your love comes with attachment and expectations, it is not love but a transaction.", "True love does not bind; it liberates. It is the absence of the 'other'."],
+                "songs": ["Listen to 'Bulla Ki Jaana Main Kaun' by Bulleh Shah. It's a Sufi song about dissolving the self to find true Love.", "Listen to Meera Bai's bhajan 'Aisi Lagi Lagan', about unwavering, unconditional devotion."],
+                "activities": ["Observe your relationships: Are they based on need and attachment, or on freedom and giving?", "Practice wishing well for all beings, without expecting anything in return."]
+            },
+            "surprise": {
+                "quotes": ["Every moment of surprise is a crack in your wall of conditioning. Use it to peek into reality.", "Life is a constant surprise to the one who is not living in fixed patterns and beliefs."],
+                "songs": ["Listen to 'Alif Allah (Jugni)' by Arif Lohar & Meesha Shafi. It has a spontaneous energy that celebrates the mystery of life.", "Listen to a playful Krishna bhajan, which often speaks of the divine's unpredictable nature."],
+                "activities": ["When surprised, notice how your mind immediately tries to label the event. Try to just stay with the raw feeling of not-knowing.", "Do something completely unplanned today. Break a routine intentionally."]
+            }
+        };
+
+        async function getSentiment(message) {
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: message }),
-                    credentials: 'include' 
+                    body: JSON.stringify({ text: message }),
                 });
 
-                if (response.status === 401 || response.status === 403) {
-                    window.location.href = "/"; // Redirect to login if not authorized
-                    return null;
-                }
                 if (!response.ok) {
                     throw new Error(`API error: ${response.statusText}`);
                 }
                 
                 const data = await response.json();
-                return data.response;
+                return data;
 
             } catch (error) {
-                console.error("Failed to fetch suggestion:", error);
-                return {
-                    sentiment: 'default',
-                    suggestion: "I'm having trouble connecting. Please try again in a moment."
-                };
+                console.error("Failed to fetch sentiment:", error);
+                return null;
             }
         }
 
@@ -103,18 +126,30 @@
                 chatWindow.insertAdjacentHTML('beforeend', thinkingHTML);
                 chatWindow.scrollTop = chatWindow.scrollHeight;
 
-                const result = await getSuggestion(messageText);
+                const result = await getSentiment(messageText);
+                document.getElementById(thinkingMessageId).remove();
 
-                if (result) {
-                    const botResponseText = `It sounds like you're feeling ${result.sentiment}. Here's a thought for you:<br><br><em>"${result.suggestion}"</em>`;
-                    const borderColorClass = `border-${colorMap[result.sentiment] || 'gray-500'}/50`;
-
-                    document.getElementById(thinkingMessageId).remove();
+                let botMessageHTML;
+                if (result && typeof result.prediction !== 'undefined') {
+                    const sentimentString = sentimentMap[result.prediction];
+                    const borderColorClass = `border-${colorMap[sentimentString] || 'gray-500'}/50`;
                     
-                    const botMessageHTML = `<div class="flex items-start gap-3"><div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-white text-sm">S</div><div class="bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-xs md:max-w-md border ${borderColorClass}"><p class="text-white text-sm">${botResponseText}</p></div></div>`;
-                    chatWindow.insertAdjacentHTML('beforeend', botMessageHTML);
-                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                    const availableCategories = suggestions[sentimentString];
+                    const categoryKeys = Object.keys(availableCategories);
+                    const randomCategoryKey = categoryKeys[Math.floor(Math.random() * categoryKeys.length)];
+                    const items = availableCategories[randomCategoryKey];
+                    const randomSuggestion = items[Math.floor(Math.random() * items.length)];
+
+                    const botResponseText = `It sounds like you're feeling <strong>${sentimentString}</strong>. Here's a thought for you:<br><br><em>"${randomSuggestion}"</em>`;
+                    
+                    botMessageHTML = `<div class="flex items-start gap-3"><div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-white text-sm">S</div><div class="bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-xs md:max-w-md border ${borderColorClass}"><p class="text-white text-sm">${botResponseText}</p></div></div>`;
+                } else {
+                    const botResponseText = "I'm having trouble connecting to the sentiment model. Please try again in a moment.";
+                    botMessageHTML = `<div class="flex items-start gap-3"><div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-white text-sm">S</div><div class="bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-xs md:max-w-md border border-red-500/50"><p class="text-white text-sm">${botResponseText}</p></div></div>`;
                 }
+
+                chatWindow.insertAdjacentHTML('beforeend', botMessageHTML);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
             }
         });
     </script>

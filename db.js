@@ -10,14 +10,6 @@ const UserSchema = Schema({
     username : {type : String , unique : true},
     email : {type : String , unique : true},
     password : {type : String},
-
-    //Emotions Current Day0
-    Day0_0 : {type : Number},
-    Day0_1 : {type : Number},
-    Day0_2 : {type : Number},
-    Day0_3 : {type : Number},
-    Day0_4 : {type : Number},
-    Day0_5 : {type : Number},
 })
 
 const signupSchema = z.object({

@@ -1,109 +1,102 @@
-const { Router } = require('express')
-const { auth } = require('../auth')
+const { Router } = require('express');
+const { auth } = require('../auth');
 require('dotenv').config();
-const jwt = require('jsonwebtoken')
-const JWT_SECRET = process.env.JWT_SECRET
-const { UserModel } = require('../db')
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET;
+const { UserModel } = require('../db');
 const userRouter = Router();
 const cors = require('cors');
-const { default: z, ZodAny } = require('zod');
-const bcrypt = require('bcrypt')
+const { default: z } = require('zod');
+const bcrypt = require('bcrypt');
 const path = require('path');
 
-userRouter.use(cors())
-
+userRouter.use(cors());
 
 userRouter.post('/signup', async (req, res) => {
-
     const inputSchema = z.object({
-        email: z.email(),
+        email: z.string().email(),
         username: z.string().min(3).max(100),
         password: z.string().min(8).max(100)
-    })
+    });
 
-    console.log(req.body)
-
-    const parsedSuccess = inputSchema.safeParse(req.body)
+    const parsedSuccess = inputSchema.safeParse(req.body);
 
     if (!parsedSuccess.success) {
-        res.status(409).json({
-            error: parsedSuccess.error
-        })
+        return res.status(409).json({
+            error: "Invalid input format."
+        });
     }
 
-    else {
+    const { username, email, password } = req.body;
 
-        const username = req.body.username
-        const email = req.body.email
-        const password = req.body.password
+    try {
+        const hashedPass = await bcrypt.hash(password, 10);
+        const newUser = new UserModel({
+            email: email,
+            username: username,
+            password: hashedPass
+        });
 
+        await newUser.save();
+        res.status(200).json({
+            ok: true
+        });
 
-        try {
-            hashedPass = await bcrypt.hash(password, 10)
-            const Newuser = new UserModel({
-                email: email,
-                username: username,
-                password: hashedPass
-            })
-
-            await Newuser.save()
-            res.status(200).json({
-                ok: true
-            })
-
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({ error: "Username or email already exists." });
         }
-        catch {
-            if (error.code === 11000) {
-                return res.status(409).json({ message: "Username or email already exists." });
-            }
-            return res.status(500).json({ message: "Internal server error." });
-        }
-
+        return res.status(500).json({ error: "Internal server error." });
     }
-})
+});
 
 userRouter.post('/signin', async (req, res) => {
-    const email = req.body.email
-    const password = req.body.password
-
-    if (!email) {
-        res.status(200).json({
-            error: "username not found"
-        })
-    } else {
-        const token = jwt.sign(email, JWT_SECRET)
-
-        // You look for a user in the database
-        const user = await UserModel.findOne({ email: req.body.email });
-
-        // ADD THIS CHECK!
-        if (!user) {
-            // If no user was found, send back an error and stop execution.
-            return res.status(400).json({ error: "Invalid login credentials" });
+    if (req.headers.token) {
+        try {
+            jwt.verify(req.headers.token, JWT_SECRET);
+            return res.json({ ok: true, message: "Token is valid." });
+        } catch (e) {
+            return res.status(401).json({ error: "Invalid or expired token." });
         }
-        
-        bcrypt.compare(password, user.password, function (err, data) {
-            if (err) {
-                res.status(401).json({
-                    msg: "invalid credentials"
-                })
-            } else {
+    }
+
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({
+            error: "Email and password are required."
+        });
+    }
+
+    try {
+        const user = await UserModel.findOne({ email: email });
+
+        if (!user) {
+            return res.status(401).json({ error: "Invalid login credentials." });
+        }
+
+        bcrypt.compare(password, user.password, function (err, result) {
+            if (err || !result) {
+                return res.status(401).json({
+                    error: "Invalid login credentials."
+                });
+            }
+
+            if (result) {
                 const payload = { userId: user._id, username: user.username };
                 const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 
-                // This sends a secure cookie to the browser
-                return res.cookie('token', token, {
-                    httpOnly: true, // The cookie cannot be accessed by client-side JavaScript
-                    secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-                    sameSite: 'strict' // Helps prevent CSRF attacks
-                }).status(200).json({
-                    message: "Sign in successful."
-});                            
+                return res.status(200).json({
+                    message: "Sign in successful.",
+                    token: token
+                });
             }
-        })
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error." });
     }
-})
+});
 
 module.exports = {
     userRouter
-}
+};

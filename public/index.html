@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,89 +10,65 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-
         .form-container.hidden {
             display: none;
         }
     </style>
 </head>
-
-<body
-    class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
 
     <div class="w-full max-w-md">
-        <!-- Main Container -->
-        <div
-            class="bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
+        <div class="bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
 
-            <!-- Sign In Form -->
             <div id="signin-container" class="form-container p-8 md:p-12">
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-bold text-white">Welcome Back</h1>
                     <p class="text-gray-400 mt-2">Sign in to continue your journey.</p>
                 </div>
-
                 <form id="signin-form" class="space-y-6">
                     <div>
                         <label for="signin-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <input type="email" id="signin-email" name="email" placeholder="you@example.com" required
-                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <input type="email" id="signin-email" name="email" placeholder="you@example.com" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
                     <div>
-                        <label for="signin-password"
-                            class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                        <input type="password" id="signin-password" name="password" placeholder="••••••••" required
-                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <label for="signin-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <input type="password" id="signin-password" name="password" placeholder="••••••••" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
-                    <button type="submit"
-                        class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
+                    <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
                         Sign In
                     </button>
                 </form>
-
                 <div id="signin-message" class="text-center text-red-400 mt-4 text-sm"></div>
-
                 <div class="text-center text-gray-400 mt-8">
-                    <p>Not registered yet? <button id="show-signup"
-                            class="font-semibold text-purple-400 hover:text-purple-300">Sign Up</button></p>
+                    <p>Not registered yet? <button id="show-signup" class="font-semibold text-purple-400 hover:text-purple-300">Sign Up</button></p>
                 </div>
             </div>
 
-            <!-- Sign Up Form -->
             <div id="signup-container" class="form-container hidden p-8 md:p-12">
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-bold text-white">Create Account</h1>
                     <p class="text-gray-400 mt-2">Start your sentiment tracking journey.</p>
                 </div>
-
                 <form id="signup-form" class="space-y-6">
                     <div>
-                        <label for="signup-name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                        <input type="text" id="signup-name" name="name" placeholder="Alex Doe" required
-                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <label for="signup-username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                        <input type="text" id="signup-username" name="username" placeholder="alex_doe" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
                     <div>
                         <label for="signup-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                        <input type="email" id="signup-email" name="email" placeholder="you@example.com" required
-                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <input type="email" id="signup-email" name="email" placeholder="you@example.com" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
                     <div>
-                        <label for="signup-password"
-                            class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                        <input type="password" id="signup-password" name="password" placeholder="••••••••" required
-                            class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
+                        <label for="signup-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <input type="password" id="signup-password" name="password" placeholder="••••••••" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
-                    <button type="submit"
-                        class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
+                    <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
                         Create Account
                     </button>
                 </form>
-
                 <div id="signup-message" class="text-center text-red-400 mt-4 text-sm"></div>
-
                 <div class="text-center text-gray-400 mt-8">
-                    <p>Already have an account? <button id="show-signin"
-                            class="font-semibold text-purple-400 hover:text-purple-300">Sign In</button></p>
+                    <p>Already have an account? <button id="show-signin" class="font-semibold text-purple-400 hover:text-purple-300">Sign In</button></p>
                 </div>
             </div>
 
@@ -101,97 +76,106 @@
     </div>
 
     <script>
-    // This function runs immediately to check if the user is already logged in
-    // by simply trying to fetch the chat page. The server will handle the redirect.
-    (function() {
-        // If this page loads, it means the user is not logged in.
-        // No need for a redirect check here anymore, the server does it.
-    })();
+        const signinContainer = document.getElementById('signin-container');
+        const signupContainer = document.getElementById('signup-container');
+        const showSignupBtn = document.getElementById('show-signup');
+        const showSigninBtn = document.getElementById('show-signin');
+        const signinForm = document.getElementById('signin-form');
+        const signinMessage = document.getElementById('signin-message');
+        const signupForm = document.getElementById('signup-form');
+        const signupMessage = document.getElementById('signup-message');
 
-    const signinContainer = document.getElementById('signin-container');
-    const signupContainer = document.getElementById('signup-container');
-    const showSignupBtn = document.getElementById('show-signup');
-    const showSigninBtn = document.getElementById('show-signin');
-    const signinForm = document.getElementById('signin-form');
-    const signinMessage = document.getElementById('signin-message');
-    const signupForm = document.getElementById('signup-form');
-    const signupMessage = document.getElementById('signup-message');
+        async function checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await fetch('/api/v1/user/signin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'token': token
+                        }
+                    });
 
-    showSignupBtn.addEventListener('click', () => {
-        signinContainer.classList.add('hidden');
-        signupContainer.classList.remove('hidden');
-    });
-
-    showSigninBtn.addEventListener('click', () => {
-        signupContainer.classList.add('hidden');
-        signinContainer.classList.remove('hidden');
-    });
-
-    // Handle Sign In Form Submission
-    signinForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        signinMessage.textContent = '';
-        const formData = new FormData(signinForm);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const response = await fetch('/api/v1/user/signin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email : data.email,
-                    password : data.password
-                })
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                // The server set the cookie, so we just need to redirect.
-                window.location.href = "/chatpage.html";
-            } else {
-                signinMessage.textContent = result.message || 'An error occurred.';
+                    if (response.ok) {
+                        window.location.href = "/chatpage.html";
+                    } else {
+                        localStorage.removeItem('token');
+                    }
+                } catch (error) {
+                    console.error('Auto sign-in failed:', error);
+                }
             }
-        } catch (error) {
-            signinMessage.textContent = 'Could not connect to the server.';
         }
-    });
+        
+        showSignupBtn.addEventListener('click', () => {
+            signinContainer.classList.add('hidden');
+            signupContainer.classList.remove('hidden');
+        });
 
-    // Handle Sign Up Form Submission
-    signupForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        signupMessage.textContent = '';
-        const formData = new FormData(signupForm);
-        const data = Object.fromEntries(formData.entries());
+        showSigninBtn.addEventListener('click', () => {
+            signupContainer.classList.add('hidden');
+            signinContainer.classList.remove('hidden');
+        });
 
-        try {
-            const response = await fetch('/api/v1/user/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username : data.name,
-                    email : data.email,
-                    password : data.password
-                })
-            });
-            const result = await response.json();
+        signinForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            signinMessage.textContent = '';
+            const formData = new FormData(signinForm);
+            const data = Object.fromEntries(formData.entries());
 
-            if (response.ok) {
-                signupMessage.textContent = 'Sign up successful! Please sign in.';
-                signupMessage.classList.replace('text-red-400', 'text-green-400');
-                setTimeout(() => {
-                    signupContainer.classList.add('hidden');
-                    signinContainer.classList.remove('hidden');
-                }, 2000);
-            } else {
-                const errorMessages = result.errors ? Object.values(result.errors).flat().join(' ') : (result.message || 'An error occurred.');
-                signupMessage.textContent = errorMessages;
+            try {
+                const response = await fetch('/api/v1/user/signin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.token) {
+                    localStorage.setItem('token', result.token);
+                    window.location.href = "/chatpage.html";
+                } else {
+                    signinMessage.textContent = result.error || 'An error occurred.';
+                }
+            } catch (error) {
+                signinMessage.textContent = 'Could not connect to the server.';
             }
-        } catch (error) {
-            signupMessage.textContent = 'Could not connect to the server.';
-        }
-    });
-</script>
+        });
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            signupMessage.textContent = '';
+            const formData = new FormData(signupForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/v1/user/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    signupMessage.textContent = 'Sign up successful! Please sign in.';
+                    signupMessage.classList.replace('text-red-400', 'text-green-400');
+                    setTimeout(() => {
+                        signupContainer.classList.add('hidden');
+                        signinContainer.classList.remove('hidden');
+                    }, 2000);
+                } else {
+                    const errorMsg = result.error || 'An error occurred.';
+                    signupMessage.textContent = errorMsg;
+                }
+            } catch (error) {
+                signupMessage.textContent = 'Could not connect to the server.';
+            }
+        });
+
+        checkLoginStatus();
+
+    </script>
 </body>
-
 </html>
