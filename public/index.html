@@ -63,13 +63,30 @@
                         <input type="password" id="signup-password" name="password" placeholder="••••••••" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600">
                     </div>
                     <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
-                        Create Account
+                        Send Verification Code
                     </button>
                 </form>
                 <div id="signup-message" class="text-center text-red-400 mt-4 text-sm"></div>
                 <div class="text-center text-gray-400 mt-8">
                     <p>Already have an account? <button id="show-signin" class="font-semibold text-purple-400 hover:text-purple-300">Sign In</button></p>
                 </div>
+            </div>
+            
+            <div id="otp-container" class="form-container hidden p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-white">Verify Your Email</h1>
+                    <p class="text-gray-400 mt-2">Enter the code sent to your email.</p>
+                </div>
+                <form id="otp-form" class="space-y-6">
+                    <div>
+                         <label for="otp" class="block text-sm font-medium text-gray-300 mb-2">Verification Code</label>
+                        <input type="text" id="otp" name="otp" placeholder="123456" required class="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 border border-gray-600 text-center tracking-[1em]">
+                    </div>
+                    <button type="submit" class="w-full bg-purple-600 text-white font-semibold py-3 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all duration-300 transform hover:scale-105">
+                        Verify & Create Account
+                    </button>
+                </form>
+                <div id="otp-message" class="text-center text-red-400 mt-4 text-sm"></div>
             </div>
 
         </div>
@@ -78,12 +95,19 @@
     <script>
         const signinContainer = document.getElementById('signin-container');
         const signupContainer = document.getElementById('signup-container');
+        const otpContainer = document.getElementById('otp-container');
         const showSignupBtn = document.getElementById('show-signup');
         const showSigninBtn = document.getElementById('show-signin');
+        
         const signinForm = document.getElementById('signin-form');
-        const signinMessage = document.getElementById('signin-message');
         const signupForm = document.getElementById('signup-form');
+        const otpForm = document.getElementById('otp-form');
+
+        const signinMessage = document.getElementById('signin-message');
         const signupMessage = document.getElementById('signup-message');
+        const otpMessage = document.getElementById('otp-message');
+        
+        let signupData = {};
 
         async function checkLoginStatus() {
             const token = localStorage.getItem('token');
@@ -148,29 +172,57 @@
             e.preventDefault();
             signupMessage.textContent = '';
             const formData = new FormData(signupForm);
-            const data = Object.fromEntries(formData.entries());
+            signupData = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/v1/user/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: signupData.email })
+                });
+                const result = await response.json();
+                
+                if (response.ok) {
+                    signupContainer.classList.add('hidden');
+                    otpContainer.classList.remove('hidden');
+                    otpMessage.textContent = result.message;
+                    otpMessage.classList.replace('text-red-400', 'text-green-400');
+                } else {
+                    signupMessage.textContent = result.error || 'An error occurred.';
+                }
+
+            } catch (error) {
+                 signupMessage.textContent = 'Could not connect to the server.';
+            }
+        });
+        
+        otpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            otpMessage.textContent = '';
+            const otp = document.getElementById('otp').value;
+            const finalSignupData = { ...signupData, otp };
 
             try {
                 const response = await fetch('/api/v1/user/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(finalSignupData)
                 });
                 const result = await response.json();
 
                 if (response.ok) {
-                    signupMessage.textContent = 'Sign up successful! Please sign in.';
-                    signupMessage.classList.replace('text-red-400', 'text-green-400');
+                    otpMessage.textContent = 'Account created! Please sign in.';
+                    otpMessage.classList.replace('text-red-400', 'text-green-400');
                     setTimeout(() => {
-                        signupContainer.classList.add('hidden');
+                        otpContainer.classList.add('hidden');
                         signinContainer.classList.remove('hidden');
                     }, 2000);
                 } else {
-                    const errorMsg = result.error || 'An error occurred.';
-                    signupMessage.textContent = errorMsg;
+                    otpMessage.textContent = result.error || 'An error occurred.';
+                    otpMessage.classList.replace('text-green-400', 'text-red-400');
                 }
             } catch (error) {
-                signupMessage.textContent = 'Could not connect to the server.';
+                 otpMessage.textContent = 'Could not connect to the server.';
             }
         });
 
